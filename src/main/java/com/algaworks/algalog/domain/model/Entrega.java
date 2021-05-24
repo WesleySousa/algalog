@@ -2,6 +2,8 @@ package com.algaworks.algalog.domain.model;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,5 +44,16 @@ public class Entrega {
 	private OffsetDateTime dataPedido;
 
 	private OffsetDateTime dataFinalizacao;
+
+	@OneToMany(mappedBy = "entrega")
+	private List<Ocorrencia> ocorrencias = new ArrayList<>();
+
+	public Ocorrencia adicionarOcorrencia(String descricao) {
+		Ocorrencia ocorrencia = new Ocorrencia();
+		ocorrencia.setDescricao(descricao);
+		ocorrencia.setDataRegistro(OffsetDateTime.now());
+		ocorrencia.setEntrega(this);
+		return ocorrencia;
+	}
 
 }
